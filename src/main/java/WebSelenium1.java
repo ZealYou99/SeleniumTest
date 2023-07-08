@@ -15,9 +15,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class WebSelenium1 {
+    WebDriver driver = new ChromeDriver();
     @Test
     public void test() throws InterruptedException, IOException {
-        WebDriver driver = new ChromeDriver();
+
         driver.get("https://www.saucedemo.com/");
         driver.manage().window().maximize();
         WebElement box = driver.findElement(By.id("login_credentials"));
@@ -59,10 +60,8 @@ public class WebSelenium1 {
         for (int i = 0; i < 6; i++) {
             buttonsRemoveCart.get(i).click();
         }
-        WebElement filterSelect = driver.findElement(By.cssSelector("select.product_sort_container"));
-        Select select = new Select(filterSelect);
         //klikanie po filtrze z do a
-        select.selectByVisibleText("Name (Z to A)");
+        changeSelect("za");
         buttonsAddCart = driver.findElements(By.cssSelector("button.btn.btn_primary.btn_small.btn_inventory"));
         buttonsAddCart.get(0).click();
         Assert.assertTrue("Czy pojawia sie czerwony element z liczba", driver.findElement(By.cssSelector("span.shopping_cart_badge")).isDisplayed());
@@ -76,9 +75,7 @@ public class WebSelenium1 {
             buttonsRemoveCart.get(i).click();
         }
         //klikanie po filtrze cen
-        filterSelect = driver.findElement(By.cssSelector("select.product_sort_container"));
-        select = new Select(filterSelect);
-        select.selectByValue("lohi");
+        changeSelect("lohi");
         buttonsAddCart = driver.findElements(By.cssSelector("button.btn.btn_primary.btn_small.btn_inventory"));
         buttonsAddCart.get(0).click();
         Assert.assertTrue("Czy pojawia sie czerwony element z liczba", driver.findElement(By.cssSelector("span.shopping_cart_badge")).isDisplayed());
@@ -92,9 +89,7 @@ public class WebSelenium1 {
             buttonsRemoveCart.get(i).click();
         }
         //klikanie po filtrze cen
-        filterSelect = driver.findElement(By.cssSelector("select.product_sort_container"));
-        select = new Select(filterSelect);
-        select.selectByValue("hilo");
+        changeSelect("hilo");
         buttonsAddCart = driver.findElements(By.cssSelector("button.btn.btn_primary.btn_small.btn_inventory"));
         buttonsAddCart.get(0).click();
         Assert.assertTrue("Czy pojawia sie czerwony element z liczba", driver.findElement(By.cssSelector("span.shopping_cart_badge")).isDisplayed());
@@ -108,9 +103,7 @@ public class WebSelenium1 {
             buttonsRemoveCart.get(i).click();
         }
         //powrot do az, dodanie kilku produktów, sprawdzanie koszyka
-        filterSelect = driver.findElement(By.cssSelector("select.product_sort_container"));
-        select = new Select(filterSelect);
-        select.selectByValue("az");
+        changeSelect("az");
         buttonsAddCart = driver.findElements(By.cssSelector("button.btn.btn_primary.btn_small.btn_inventory"));
         List<Integer> products = new ArrayList<>(List.of(1, 3, 5));
         for (int product : products) {
@@ -188,5 +181,9 @@ public class WebSelenium1 {
         driver.quit();
 
     }
-
+    private void changeSelect(String value){
+        Select select = new Select(driver.findElement(By.cssSelector("select.product_sort_container"));
+        select.selectByValue(value);
+    }
+    private void redBadgeAppear(){};
 }
